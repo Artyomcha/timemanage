@@ -1,0 +1,35 @@
+name: "timemanage"
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: timemanage-postgres
+    environment:
+      POSTGRES_DB: timemanage
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    volumes:
+      - timemanage_pg:/var/lib/postgresql/data
+    tmpfs:
+      - /tmp
+    command:
+      - -c
+      - listen_addresses=*
+  minio:
+    image: minio/minio:latest
+    container_name: timemanage-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports:
+      - "9000:9000" # API
+      - "9001:9001" # Console
+    volumes:
+      - timemanage_minio_data:/data
+
+volumes:
+  timemanage_pg:
+  timemanage_minio_data:
