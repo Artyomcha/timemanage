@@ -47,7 +47,6 @@ export async function action({ request }: ActionFunctionArgs) {
   const description = formData.get("description")?.toString() || "";
   const status = formData.get("status")?.toString() || "";
   const startDate = formData.get("startDate")?.toString() || "";
-
   if (!title || !status) {
     return { error: "Title and status is required" };
   }
